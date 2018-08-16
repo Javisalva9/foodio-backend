@@ -11,7 +11,16 @@ const router = express.Router();
 app.use(cors());
 app.use(bodyParser.json());
 
-mongoose.connect('mongodb://localhost:27017/issues');
+var url = process.env.MONGODB_URI;
+console.log(url)
+
+
+if (url) {
+  mongoose.connect(url);
+} else {
+  mongoose.connect('mongodb://localhost:27017/issues');
+}
+
 
 const connection = mongoose.connection;
 
