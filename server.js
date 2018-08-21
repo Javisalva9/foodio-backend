@@ -14,13 +14,11 @@ app.use(bodyParser.json());
 var url = process.env.MONGODB_URI;
 console.log(url)
 
-
 if (url) {
   mongoose.connect(url);
 } else {
   mongoose.connect('mongodb://localhost:27017/issues');
 }
-
 
 const connection = mongoose.connection;
 
@@ -88,4 +86,4 @@ router.route('/issues/delete/:id').get((req, res) => {
 
 app.use('/', router);
 
-app.listen(4000, () => console.log(`Express server running on port 4000`));
+app.listen((process.env.PORT || 4000), () => console.log(`Express server running on port 4000`));
