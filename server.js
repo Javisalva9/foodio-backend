@@ -12,12 +12,12 @@ app.use(cors());
 app.use(bodyParser.json());
 
 var url = process.env.MONGODB_URI;
-console.log(url)
 
 if (url) {
-  mongoose.connect(url);
+  console.log('connected url db')
+  mongoose.connect(url, { useNewUrlParser: true });
 } else {
-  mongoose.connect('mongodb://localhost:27017/issues');
+  mongoose.connect('mongodb://localhost:27017/issues', { useNewUrlParser: true });
 }
 
 const connection = mongoose.connection;
@@ -25,6 +25,10 @@ const connection = mongoose.connection;
 connection.once('open', () => {
     console.log('MongoDB database connection established successfully!');
 });
+
+var products = require('./routes/products.js');
+app.use('/products', products);
+
 
 router.route('/issues/add').post((req, res) => {
     let issue = new Issue(req.body);
@@ -77,10 +81,13 @@ router.route('/issues/update/:id').post((req, res) => {
 
 router.route('/issues/delete/:id').get((req, res) => {
     Issue.findByIdAndRemove({_id: req.params.id}, (err, issue) => {
-        if (err)
-            res.json(err);
-        else
-            res.json('Removed successfully');
+        if (err){
+          console.log('errordelete', issue);
+          res.json(err);
+        } else {
+          console.log('successdeleteissue', issue)
+          res.json('Removed successfully');
+        }
     });
 });
 
