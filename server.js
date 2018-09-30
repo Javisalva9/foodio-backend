@@ -25,7 +25,10 @@ connection.once('open', () => {
 });
 
 var products = require('./routes/products.js');
+var purchases = require('./routes/purchases.js');
+
 app.use('/products', products);
+app.use('/purchases', purchases);
 
 app.use('/', router);
 
